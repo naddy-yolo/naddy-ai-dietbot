@@ -6,6 +6,10 @@ st.title("カロミル認証コールバック")
 # URLパラメータから認証コード取得
 params = st.experimental_get_query_params()
 
+# 初期化（エラー防止）
+code = None
+payload = None
+
 if "code" in params:
     code = params["code"][0]
     st.success(f"✅ 認証コードを取得： {code}")
@@ -19,6 +23,7 @@ if "code" in params:
             "redirect_uri": "https://naddy-yolo.streamlit.app/callback",
             "code": code
         }
+        st.write("payload:", payload)  # ← POST前に中身確認
         res = requests.post(token_url, data=payload)
         if res.status_code == 200:
             token_data = res.json()
@@ -29,3 +34,5 @@ if "code" in params:
             st.json(res.json())
 else:
     st.info("URLに `?code=xxx` が含まれていません。認証からやり直してください。")
+
+st.write("code:", code)  # Noneでも出力されるので安心
