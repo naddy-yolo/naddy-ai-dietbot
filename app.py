@@ -16,7 +16,7 @@ if "code" in params:
             "grant_type": "authorization_code",
             "client_id": st.secrets["client_id"],
             "client_secret": st.secrets["client_secret"],
-            "redirect_uri": "https://naddy-yolo.streamlit.app/callback",
+            "redirect_uri": "https://naddy-ai-dietbot.streamlit.app/",
             "code": code
         }
         res = requests.post(token_url, data=payload)
