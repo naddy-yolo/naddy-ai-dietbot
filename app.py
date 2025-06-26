@@ -20,7 +20,7 @@ if "code" in params:
             "grant_type": "authorization_code",
             "client_id": st.secrets["client_id"],
             "client_secret": st.secrets["client_secret"],
-            "redirect_uri": "https://naddy-ai-dietbot.streamlit.app/",  # ✅ 完全一致にする
+            "redirect_uri": "https://naddy-ai-dietbot.streamlit.app/callback",  # ✅ 完全一致にする
             "code": code
         }
 
