@@ -5,8 +5,8 @@ params = {
     "response_type": "code",
     "client_id": "naddy_yolo",
     "state": "securetoken_20250627_demo9876543210naddyok",
-    "redirect_uri": "https://naddy-yolo.streamlit.app/callback",
-    "scope": "meal image anthropometric exercise"
+    "redirect_uri": "https://naddy-yolo.streamlit.app/callback"
+    # "scope" は除外
 }
 
 url = f"{base_url}?{urllib.parse.urlencode(params)}"
