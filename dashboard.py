@@ -4,7 +4,6 @@ import json
 import os
 
 st.set_page_config(page_title="カロミル体重データの取得", page_icon="📊")
-
 st.title("📊 カロミル体重データの取得")
 
 # アクセストークンの読み込み
@@ -24,7 +23,7 @@ if st.button("📥 体重データを取得"):
         "Authorization": f"Bearer {access_token}"
     }
 
-    # カロミルAPIの体重データ取得エンドポイント（仮の例。実際のURLに差し替えてください）
+    # ⚠️ このURLは仮です。正しい体重取得エンドポイントに差し替えてください。
     url = "https://test-connect.calomeal.com/api/v2/anthropometric/weight"
 
     response = requests.get(url, headers=headers)
