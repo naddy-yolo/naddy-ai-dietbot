@@ -27,7 +27,7 @@ if code:
             "code": code
         }
 
-        res = requests.post("https://test-connect.calomeal.com/auth/token", data=payload)
+        res = requests.post("https://test-connect.calomeal.com/auth/accesstoken", data=payload)
 
         st.subheader("payload:")
         st.json(payload)
@@ -44,7 +44,7 @@ if code:
         else:
             st.error("❌ アクセストークン取得失敗")
             st.text(f"status: {res.status_code}")
-            st.text(res.text)  # ← エラー詳細を確認するために追加
+            st.text(res.text)
 else:
     st.warning("URLに ?code=xxx が含まれていません。認証からやり直してください。")
     st.text(f"認証コード: {code}")
@@ -84,7 +84,7 @@ if os.path.exists(TOKEN_FILE):
                 else:
                     st.error("❌ データ取得に失敗しました")
                     st.text(f"status: {res.status_code}")
-                    st.write(res.text)  # ← こちらもエラーの内容確認用
+                    st.write(res.text)
         else:
             st.warning("⚠️ access_token が取得できません。")
 else:
