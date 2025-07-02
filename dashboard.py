@@ -20,27 +20,24 @@ access_token = token_data.get("access_token")
 
 # 期間を設定（過去7日分）
 today = datetime.date.today()
-start_date = (today - datetime.timedelta(days=7)).isoformat()
-end_date = today.isoformat()
+start_date = (today - datetime.timedelta(days=7)).strftime("%Y/%m/%d")
+end_date = today.strftime("%Y/%m/%d")
 
 # データ取得ボタン
 if st.button("📥 体重データを取得"):
     headers = {
-        "Authorization": f"Bearer {access_token}",
-        "Content-Type": "application/x-www-form-urlencoded"
+        "Authorization": f"Bearer {access_token}"
     }
 
-    # POST送信するformデータ（YYYY/MM/DD形式で送信）
-    payload = {
-        "start_date": start_date.replace("-", "/"),
-        "end_date": end_date.replace("-", "/"),
+    params = {
+        "start_date": start_date,
+        "end_date": end_date,
         "unit": "day"
     }
 
-    # 正しいエンドポイント
     url = "https://test-connect.calomeal.com/api/anthropometric"
 
-    response = requests.post(url, headers=headers, data=payload)
+    response = requests.get(url, headers=headers, params=params)
 
     if response.status_code == 200:
         weight_data = response.json()
