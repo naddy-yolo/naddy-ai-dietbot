@@ -1,21 +1,15 @@
 import streamlit as st
 import requests
-import json
-import os
 
 st.set_page_config(page_title="ユーザー情報の取得テスト", page_icon="🧪")
 st.title("🧪 カロミルAPI：ユーザー情報の取得テスト")
 
-# アクセストークンの読み込み
-token_file = "token.json"
-if not os.path.exists(token_file):
-    st.error("❌ アクセストークンが保存されていません。まず認証を完了してください。")
+# アクセストークンの取得（secrets から）
+if "access_token" not in st.secrets:
+    st.error("❌ st.secrets に access_token が登録されていません。")
     st.stop()
 
-with open(token_file, "r") as f:
-    token_data = json.load(f)
-
-access_token = token_data.get("access_token")
+access_token = st.secrets["access_token"]
 
 # テスト用ボタン
 if st.button("▶️ ユーザー情報を取得"):
