@@ -5,8 +5,15 @@ import os
 
 st.title("カロミル認証コールバック")
 
-# URLからcodeパラメータを取得
-params = st.query_params  # ← 新しい推奨メソッド
+# ✅ 保存済みトークンの読み込み
+if os.path.exists("token.json"):
+    with open("token.json", "r") as f:
+        saved_token = json.load(f)
+        st.info("✅ 保存済みのアクセストークンを読み込みました")
+        st.json(saved_token)
+
+# URLからcodeパラメータを取得（新方式）
+params = st.query_params
 
 # 初期化
 code = None
@@ -26,7 +33,7 @@ if "code" in params:
             "code": code
         }
 
-        st.write("payload:", payload)  # デバッグ用に表示
+        st.write("payload:", payload)  # デバッグ用
 
         res = requests.post(token_url, data=payload)
         if res.status_code == 200:
@@ -34,7 +41,7 @@ if "code" in params:
             st.json(token_data)
             st.success("✅ アクセストークン取得成功！")
 
-            # 🔽 トークンをファイルに保存
+            # 🔽 トークンを保存
             with open("token.json", "w") as f:
                 json.dump(token_data, f)
             st.info("💾 トークンを token.json に保存しました")
@@ -45,4 +52,4 @@ if "code" in params:
 else:
     st.info("URLに `?code=xxx` が含まれていません。認証からやり直してください。")
 
-st.write("認証コード:", code)  # 確認用
+st.write("認証コード:", code)
