@@ -18,26 +18,25 @@ with open(token_file, "r") as f:
 
 access_token = token_data.get("access_token")
 
-# 期間を設定（例：過去7日分）
+# 期間を設定（過去7日分）
 today = datetime.date.today()
 start_date = (today - datetime.timedelta(days=7)).isoformat()
 end_date = today.isoformat()
 
 # データ取得ボタン
-if st.button("📥 体重データを取得"):
+if st.button("📥 体重データを取得（GETメソッド）"):
     headers = {
-        "Authorization": f"Bearer {access_token}",
-        "Content-Type": "application/json"
+        "Authorization": f"Bearer {access_token}"
     }
 
-    # カロミル体重データ取得APIのエンドポイント（POSTメソッド）
+    # 体重取得API（GETで試行）
     url = "https://test-connect.calomeal.com/api/v2/anthropometric"
     params = {
         "from": start_date,
         "to": end_date
     }
 
-    response = requests.post(url, headers=headers, json=params)
+    response = requests.get(url, headers=headers, params=params)
 
     if response.status_code == 200:
         weight_data = response.json()
