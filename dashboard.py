@@ -3,33 +3,36 @@ import requests
 import json
 import os
 
-st.title("ナディ式ダッシュボード - 体重データ取得")
+st.set_page_config(page_title="カロミル体重データの取得", page_icon="📊")
 
-# トークンの読み込み
-if not os.path.exists("token.json"):
-    st.error("❌ トークンが存在しません。先に認証を完了してください。")
+st.title("📊 カロミル体重データの取得")
+
+# アクセストークンの読み込み
+token_file = "token.json"
+if not os.path.exists(token_file):
+    st.error("❌ アクセストークンが保存されていません。認証からやり直してください。")
     st.stop()
 
-with open("token.json", "r") as f:
-    tokens = json.load(f)
+with open(token_file, "r") as f:
+    token_data = json.load(f)
 
-access_token = tokens.get("access_token")
+access_token = token_data.get("access_token")
 
-# ヘッダー設定
-headers = {
-    "Authorization": f"Bearer {access_token}"
-}
+# ボタンでデータ取得を実行
+if st.button("📥 体重データを取得"):
+    headers = {
+        "Authorization": f"Bearer {access_token}"
+    }
 
-# APIエンドポイント
-weight_url = "https://test-connect.calomeal.com/api/v2/anthropometric"
+    # カロミルAPIの体重データ取得エンドポイント（仮の例。実際のURLに差し替えてください）
+    url = "https://test-connect.calomeal.com/api/v2/anthropometric/weight"
 
-if st.button("📊 体重データを取得"):
-    res = requests.get(weight_url, headers=headers)
+    response = requests.get(url, headers=headers)
 
-    if res.status_code == 200:
-        data = res.json()
+    if response.status_code == 200:
+        weight_data = response.json()
         st.success("✅ データ取得成功！")
-        st.json(data)
+        st.json(weight_data)
     else:
-        st.error(f"❌ データ取得失敗（status: {res.status_code}）")
-        st.json(res.json())
+        st.error("❌ データ取得に失敗しました")
+        st.text(f"status: {response.status_code}")
