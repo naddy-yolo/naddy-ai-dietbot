@@ -7,7 +7,6 @@ import datetime
 st.set_page_config(page_title="カロミル体重データの取得", page_icon="📊")
 st.title("📊 カロミル体重データの取得")
 
-# アクセストークンの読み込み
 token_file = "token.json"
 if not os.path.exists(token_file):
     st.error("❌ アクセストークンが保存されていません。まず認証を完了してください。")
@@ -18,13 +17,13 @@ with open(token_file, "r") as f:
 
 access_token = token_data.get("access_token")
 
-# 期間を設定（例：過去7日分）
+# 過去7日分のデータを取得
 today = datetime.date.today()
 start_date = (today - datetime.timedelta(days=7)).strftime("%Y/%m/%d")
 end_date = today.strftime("%Y/%m/%d")
 
-# データ取得ボタン
-if st.button("📥 体重データを取得"):
+if st.button("📥 体重データを取得（POST）"):
+    url = "https://test-connect.calomeal.com/api/anthropometric"
     headers = {
         "Authorization": f"Bearer {access_token}",
         "Content-Type": "application/x-www-form-urlencoded"
@@ -32,17 +31,14 @@ if st.button("📥 体重データを取得"):
     data = {
         "start_date": start_date,
         "end_date": end_date,
-        "unit": "day"
+        "unit": "day"  # 例: "detail", "day", "week", "month", "end_of_month"
     }
-
-    url = "https://test-connect.calomeal.com/api/anthropometric"
 
     response = requests.post(url, headers=headers, data=data)
 
     if response.status_code == 200:
-        weight_data = response.json()
-        st.success("✅ 体重データの取得に成功しました！")
-        st.json(weight_data)
+        st.success("✅ 体重データ取得成功！")
+        st.json(response.json())
     else:
         st.error("❌ データ取得に失敗しました")
         st.text(f"status: {response.status_code}")
