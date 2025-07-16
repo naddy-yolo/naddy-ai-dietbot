@@ -23,18 +23,19 @@ end_date = today.strftime("%Y/%m/%d")
 
 # 📥 ボタン押下で取得開始
 if st.button("📥 体重・体脂肪率データを取得"):
-    url = "https://test-connect.calomeal.com/api/anthropometric"
     headers = {
         "Authorization": f"Bearer {access_token}",
         "Content-Type": "application/json"
     }
-    json_data = {
+
+    payload = {
         "start_date": start_date,
         "end_date": end_date,
         "unit": "kg"
     }
 
-    response = requests.post(url, headers=headers, json=json_data)
+    url = "https://test-connect.calomeal.com/api/anthropometric"
+    response = requests.post(url, headers=headers, json=payload)
 
     st.subheader("✅ レスポンス")
     st.text(f"ステータスコード: {response.status_code}")
