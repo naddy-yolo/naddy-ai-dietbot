@@ -1,34 +1,25 @@
 import streamlit as st
 import requests
-import datetime
 
-st.set_page_config(page_title="体重データの取得", page_icon="⚖️")
-st.title("⚖️ カロミルAPI：体重・体脂肪率の取得")
+st.set_page_config(page_title="ユーザー情報の取得テスト", page_icon="🧪")
+st.title("🧪 カロミルAPI：ユーザー情報の取得テスト")
 
-# アクセストークン
+# アクセストークンの取得（secrets から）
 if "access_token" not in st.secrets:
     st.error("❌ st.secrets に access_token が登録されていません。")
     st.stop()
+
 access_token = st.secrets["access_token"]
 
-# 日付の範囲（過去7日間）
-today = datetime.date.today()
-start_date = (today - datetime.timedelta(days=7)).strftime("%Y/%m/%d")
-end_date = today.strftime("%Y/%m/%d")
-
-if st.button("📥 体重・体脂肪率データを取得"):
+# テスト用ボタン
+if st.button("▶️ ユーザー情報を取得"):
     headers = {
-        "Authorization": f"Bearer {access_token}"
-    }
-    params = {
-        "start_date": start_date,
-        "end_date": end_date,
-        "unit": "day"
+        "Authorization": f"Bearer {access_token}",
+        "Content-Type": "application/x-www-form-urlencoded"
     }
 
-    url = "https://test-connect.calomeal.com/api/anthropometric"
-
-    response = requests.get(url, headers=headers, params=params)
+    url = "https://test-connect.calomeal.com/api/user_info"
+    response = requests.post(url, headers=headers)
 
     st.subheader("✅ レスポンス")
     st.text(f"ステータスコード: {response.status_code}")
