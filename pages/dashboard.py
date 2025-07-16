@@ -15,8 +15,8 @@ access_token = st.secrets["access_token"]
 
 # 取得範囲（直近7日間）
 today = datetime.date.today()
-start_date = (today - datetime.timedelta(days=7)).isoformat()
-end_date = today.isoformat()
+start_date = (today - datetime.timedelta(days=7)).strftime("%Y/%m/%d")
+end_date = today.strftime("%Y/%m/%d")
 
 # ボタン押下で実行
 if st.button("📥 体重データを取得"):
@@ -24,8 +24,9 @@ if st.button("📥 体重データを取得"):
         "Authorization": f"Bearer {access_token}"
     }
     params = {
-        "from": start_date,
-        "to": end_date
+        "start_date": start_date,
+        "end_date": end_date,
+        "unit": "day"
     }
     url = "https://test-connect.calomeal.com/api/anthropometric"
 
