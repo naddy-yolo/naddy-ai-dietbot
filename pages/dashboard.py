@@ -3,7 +3,7 @@ import requests
 import datetime
 
 st.set_page_config(page_title="体重データ取得", page_icon="⚖️")
-st.title("⚖️ カロミルAPI：体重データ取得")
+st.title("⚖️ カロミルAPI：体重データ取得20:01")
 
 # 🔑 アクセストークン読み込み（st.secrets から）
 if "access_token" not in st.secrets:
@@ -23,6 +23,8 @@ end_date = today.strftime("%Y/%m/%d")
 
 # 📥 ボタン押下で取得開始
 if st.button("📥 体重・体脂肪率データを取得"):
+    url = "https://test-connect.calomeal.com/api/anthropometric"
+
     headers = {
         "Authorization": f"Bearer {access_token}",
         "Content-Type": "application/json"
@@ -34,7 +36,6 @@ if st.button("📥 体重・体脂肪率データを取得"):
         "unit": "kg"
     }
 
-    url = "https://test-connect.calomeal.com/api/anthropometric"
     response = requests.post(url, headers=headers, json=payload)
 
     st.subheader("✅ レスポンス")
