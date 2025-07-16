@@ -1,7 +1,6 @@
 import streamlit as st
 import requests
 import datetime
-import json
 
 st.set_page_config(page_title="体重データ取得", page_icon="⚖️")
 st.title("⚖️ カロミルAPI：体重データ取得")
@@ -13,7 +12,7 @@ if "access_token" not in st.secrets:
 
 access_token = st.secrets["access_token"]
 
-# 取得範囲（直近7日間）を YYYY/MM/DD 形式で設定
+# 取得範囲（直近7日間）
 today = datetime.date.today()
 start_date = (today - datetime.timedelta(days=7)).strftime("%Y/%m/%d")
 end_date = today.strftime("%Y/%m/%d")
@@ -23,10 +22,12 @@ if st.button("📥 体重データを取得"):
     headers = {
         "Authorization": f"Bearer {access_token}"
     }
+
     params = {
-        "from": start_date,
-        "to": end_date
+        "start_date": start_date,
+        "end_date": end_date
     }
+
     url = "https://test-connect.calomeal.com/api/anthropometric"
 
     response = requests.get(url, headers=headers, params=params)
